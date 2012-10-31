@@ -112,6 +112,24 @@ int main(void)
 			break;
 	}
 
+	printf("%04X\n",ntohs (st_Ether -> ether_type));
+	stip=(struct ip *)(st_Ether+1);
+	printf("version                : %d\n", stip->ip_v);
+	printf("header length          : %d \n", 4*stip->ip_hl);
+	printf("type of service        : 0X%02X \n", stip->ip_tos);
+	printf("total length           : %d \n", stip->ip_len);
+	printf("identification         : 0X%04X \n", ntohs(stip->ip_id));
+	printf("Reserved Bit           : %s\n", (IP_RF == (ntohs((stip->ip_off) & IP_RF)))?"set":"not set");
+	printf("Don't Fragment         : %s\n", (IP_DF == (ntohs((stip->ip_off) & IP_DF)))?"set":"not set");
+	printf("More Fragments         : %s\n", (IP_MF == (ntohs((stip->ip_off) & IP_MF)))?"set":"not set");
+	printf("fragment offset field  : %d\n", ntohs((stip->ip_off) & IP_OFFMASK));
+	printf("time to live           : %d \n", stip->ip_ttl);
+	printf("protocol               : %d \n", stip->ip_p);
+	printf("checksum               : 0X%04X \n", ntohs(stip->ip_sum));
+
+	printf("IP                     : [%s] ->", inet_ntoa(stip->ip_src));
+	printf(" [%s]\n", inet_ntoa(stip->ip_src));
+
 	pcap_close(NIC_dev);
 	return 0;
 }
